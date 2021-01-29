@@ -34,6 +34,7 @@ data = pd.read_csv('pokemon.csv')
 
 # show welcome message
 welcome_message = """
+
                                     = = = = = = = = = = = = = = = = = 
                                     =                               =
                                     =     Welcome to PokéFinder     =
@@ -42,6 +43,7 @@ welcome_message = """
                                     = = = = = = = = = = = = = = = = =
 
 This tool lets you enter any number of types and returns all Pokémon that resist these types.
+
 """
 
 print(welcome_message)
