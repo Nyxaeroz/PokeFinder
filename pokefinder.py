@@ -35,12 +35,12 @@ data = pd.read_csv('pokemon.csv')
 # show welcome message
 welcome_message = """
 
-                                    = = = = = = = = = = = = = = = = = 
-                                    =                               =
-                                    =     Welcome to PokéFinder     =
-                                    =   (made by Thijs and Robin!)  =
-                                    =                               = 
-                                    = = = = = = = = = = = = = = = = =
+	                      = = = = = = = = = = = = = = = = = 
+	                      =                               =
+	                      =     Welcome to PokéFinder     =
+	                      =   (made by Thijs and Robin!)  =
+	                      =                               = 
+	                      = = = = = = = = = = = = = = = = =
 
 This tool lets you enter any number of types and returns all Pokémon that resist these types.
 
@@ -51,7 +51,6 @@ print(welcome_message)
 # get user input
 intput_types_string = input("Enter types: ")
 input_types_list    = intput_types_string.lower().split(" ")
-print(input_types_list)
 
 # choice              = input("Pokemon or types? (p/t)") 
 # generation          = input("Maximum generation (1-8)")
@@ -80,8 +79,6 @@ for pokemon in data.values:
     if qualified == True:
         print(pokemon)
         # qualified_pokemon_numbers.append(pokemon[0])
-
-
 
 
 # how it works:
