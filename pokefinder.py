@@ -35,6 +35,12 @@ def weakness_multiplier(type1, type2):
     else: 
         return weakness_chart[type_index][type1] * weakness_chart[type_index][type2]
 
+def print_pokemon(pokemon):
+    if pokemon[2] == 'none':
+        print('-',pokemon[1],'(', pokemon[3],')')
+    else:
+        print('-',pokemon[1],'(', pokemon[2], ',', pokemon[3],')')   
+
 
 # read the pokemon data
 data = pd.read_csv('pokemon.csv')
@@ -56,7 +62,7 @@ This tool lets you enter any number of types and returns all Pokémon that resis
 print(welcome_message)
 
 # get user input
-intput_types_string = input("Enter types: ")
+intput_types_string = input("Resistant to: ")
 input_types_list    = intput_types_string.lower().split(" ")
 
 # choice              = input("Pokemon or types? (p/t)") 
@@ -87,7 +93,7 @@ for pokemon in data.values:
             qualified = False
 
     if qualified == True:
-        print(pokemon)
+        print_pokemon(pokemon)
         # qualified_pokemon_numbers.append(pokemon[0])
 
 
