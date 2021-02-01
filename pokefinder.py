@@ -4,49 +4,37 @@ import pandas as pd
 import numpy as np
 
 # all types (except null)
-types = ['bug', 'dark', 'dragon', 'electric', 'fairy', 'fighting', 'fire', 'flying', 'ghost', 'grass', 'ground', 'ice', 'normal', 'poison', 'psychic', 'rock', 'steel', 'water']
+types = ['bug', 'dark', 'dragon', 'electric', 'fairy', 'fighting', 'fire', 'flying', 'ghost', 'grass', 'ground', 'ice', 'normal', 'poison', 'psychic', 'rock', 'steel', 'water', 'none']
 
-#weakness and resistance chart
-weakness_and_resistance_chart = np.array([[1, 2, 1, 1, 0.5, 0.5, 0.5, 0.5, 0.5, 2, 1, 1, 1, 0.5, 2, 1, 0.5, 1],
-                                          [1, 0.5, 1, 1, 0.5, 0.5, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 1],
-                                          [1, 1, 2, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0.5, 1],
-                                          [1, 1, 0.5, 0.5, 1, 1, 1, 2, 1, 0.5, 0, 1, 1, 1, 1, 1, 1, 2],
-                                          [1, 2, 2, 1, 1, 2, 0.5, 1, 1, 1, 1, 1, 1, 0.5, 1, 1, 0.5, 1],
-                                          [0.5, 2, 1, 1, 0.5, 1, 1, 0.5, 0, 1, 1, 2, 2, 0.5, 0.5, 2, 2, 1],
-                                          [2, 1, 0.5, 1, 1, 1, 0.5, 1, 1, 2, 1, 2, 1, 1, 1, 0.5, 2, 0.5],
-                                          [2, 1, 1, 0.5, 1, 2, 1, 1, 1, 2, 1, 1, 1, 1, 1, 0.5, 0.5, 1],
-                                          [1, 0.5, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 0, 1, 2, 1, 1, 1],
-                                          [0.5, 1, 0.5, 1, 1, 1, 0.5, 1, 1, 0.5, 2, 1, 1, 0.5, 1, 2, 0.5, 2],
-                                          [0.5, 1, 1, 2, 1, 1, 2, 0, 1, 0.5, 1, 1, 1, 2, 1, 2, 2, 1],
-                                          [1, 1, 2, 1, 1, 1, 0.5, 2, 1, 2, 2, 0.5, 1, 1, 1, 1, 0.5, 0.5],
-                                          [1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0.5, 0.5, 1],
-                                          [1, 1, 1, 1, 2, 1, 1, 1, 0.5, 2, 0.5, 1, 1, 0.5, 1, 0.5, 0.5, 1],
-                                          [1, 0, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 2, 0.5, 1, 0.5, 1],
-                                          [2, 1, 1, 1, 1, 0.5, 2, 2, 1, 1, 0.5, 2, 1, 1, 1, 1, 0.5, 1],
-                                          [1, 1, 1, 0.5, 2, 1, 0.5, 1, 1, 1, 1, 2, 1, 1, 1, 2, 0.5, 0.5],
-                                          [1, 1, 0.5, 1, 1, 1, 2, 1, 1, 0.5, 2, 1, 1, 1, 1, 2, 1, 0.5]])
-# resistances
-resistances = {
-    'none':[],
-    'bug':['fighting','flying','poison','ghost','steel','fairy'],
-    'dark':['fighting','dark','fairy'],
-    'dragon':['steel','fairy'],
-    'electric':['ground','grass','electric','dragon'],
-    'fairy':['poison','steel','fire'],
-    'fighting':['flying','poison','ghost','psychic','fairy'],
-    'fire':['rock','fire','water','dragon'],
-    'flying':['rock','electric','steel'],
-    'ghost':['normal','dark'],
-    'grass':['flying','poison','bug','steel','fire','grass','dragon'],
-    'ground':['flying','bug','grass'],
-    'ice':['steel','fire','water','ice'],
-    'normal':['rock','ghost','steel'],
-    'poison':['ground','rock','ghost','steel'],
-    'psychic':['steel','pychic','dark'],
-    'rock':['fighting','ground','steel'],
-    'steel':['steel','fire','water','electric'],
-    'water':['water','grass','dragon']
-}
+# weakness and resistance chart
+# [attacker][defender]                    bug   drk  dgn  eltk fry  fgh  fire fly  ghst grs  grnd ice  nrml psn  psy  rck  stl  wtr  
+weakness_chart = np.array([
+                                          [1,   2,   1,   1,   0.5, 0.5, 0.5, 0.5, 0.5, 2,   1,   1,   1,   0.5, 2,   1,   0.5, 1  ],  # bug 
+                                          [1,   0.5, 1,   1,   0.5, 0.5, 1,   1,   2,   1,   1,   1,   1,   1,   2,   1,   1,   1  ],  # drk
+                                          [1,   1,   2,   1,   0,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   0.5, 1  ],  # dgn
+                                          [1,   1,   0.5, 0.5, 1,   1,   1,   2,   1,   0.5, 0,   1,   1,   1,   1,   1,   1,   2  ],  # eltk
+                                          [1,   2,   2,   1,   1,   2,   0.5, 1,   1,   1,   1,   1,   1,   0.5, 1,   1,   0.5, 1  ],  # fry
+                                          [0.5, 2,   1,   1,   0.5, 1,   1,   0.5, 0,   1,   1,   2,   2,   0.5, 0.5, 2,   2,   1  ],  # fhg
+                                          [2,   1,   0.5, 1,   1,   1,   0.5, 1,   1,   2,   1,   2,   1,   1,   1,   0.5, 2,   0.5],  # fire
+                                          [2,   1,   1,   0.5, 1,   2,   1,   1,   1,   2,   1,   1,   1,   1,   1,   0.5, 0.5, 1  ],  # fly
+                                          [1,   0.5, 1,   1,   1,   1,   1,   1,   2,   1,   1,   1,   0,   1,   2,   1,   1,   1  ],  # ghst
+                                          [0.5, 1,   0.5, 1,   1,   1,   0.5, 1,   1,   0.5, 2,   1,   1,   0.5, 1,   2,   0.5, 2  ],  # grs
+                                          [0.5, 1,   1,   2,   1,   1,   2,   0,   1,   0.5, 1,   1,   1,   2,   1,   2,   2,   1  ],  # grnd
+                                          [1,   1,   2,   1,   1,   1,   0.5, 2,   1,   2,   2,   0.5, 1,   1,   1,   1,   0.5, 0.5],  # ice
+                                          [1,   1,   1,   1,   1,   1,   1,   1,   0,   1,   1,   1,   1,   1,   1,   0.5, 0.5, 1  ],  # nrml
+                                          [1,   1,   1,   1,   2,   1,   1,   1,   0.5, 2,   0.5, 1,   1,   0.5, 1,   0.5, 0.5, 1  ],  # psn
+                                          [1,   0,   1,   1,   1,   2,   1,   1,   1,   1,   1,   1,   1,   2,   0.5, 1,   0.5, 1  ],  # psy
+                                          [2,   1,   1,   1,   1,   0.5, 2,   2,   1,   1,   0.5, 2,   1,   1,   1,   1,   0.5, 1  ],  # rck
+                                          [1,   1,   1,   0.5, 2,   1,   0.5, 1,   1,   1,   1,   2,   1,   1,   1,   2,   0.5, 0.5],  # stl
+                                          [1,   1,   0.5, 1,   1,   1,   2,   1,   1,   0.5, 2,   1,   1,   1,   1,   2,   1,   0.5]]) # water
+
+# calculate weakness multiplier depending on type1 (is it 'none' or not?)
+def weakness_multiplier(type1, type2):
+    if type1 == 18: 
+        return weakness_chart[type_index][type2]
+    else: 
+        return weakness_chart[type_index][type1] * weakness_chart[type_index][type2]
+
 
 # read the pokemon data
 data = pd.read_csv('pokemon.csv')
@@ -85,16 +73,19 @@ for word in input_types_list:
 # later maybe: stuff with generations etc?
 
 # determine types that resist input types
-# maybe use this later for fancier printing:
-# qualified_pokemon_numbers = []
 for pokemon in data.values:
     qualified = True
-    type1 = pokemon[2] # first type of pokemon (possibly 'none')
-    type2 = pokemon[3] # second type of pokemon
+    type1 = types.index(pokemon[2])
+    type2 = types.index(pokemon[3])
+
     for word in valid_input_types_list:
-        list_of_resistances = resistances[word]
-        if type1 not in list_of_resistances and type2 not in list_of_resistances:
+        type_index = types.index(word)
+        mult = weakness_multiplier(type1,type2)
+        
+        # check whether pokemon is qualified 
+        if mult >= 1:
             qualified = False
+
     if qualified == True:
         print(pokemon)
         # qualified_pokemon_numbers.append(pokemon[0])
@@ -103,19 +94,11 @@ for pokemon in data.values:
 # how it works:
 # ------------
 # 
-# As input, we get a list of types: valid_input_types
-# For each type 'word' in this list, we have a list of types that resist 'word'
-# We then want to check, for each Pokemon, whether each list of resistances has a representative in the Pokemon's types
-# 
-# An example:
-# ----------
-# valid_input_types_list: ground       water                    fairy
-# list_of_resistances:    [bug,grass]  [grass, dragon, water]   [poison, steel, fire]
-# first pokemon:          Bulbasaur:   poison, grass
-# 
-# So, Bulbasaur is qualified, as each resistance list has a representative:
-#    ground -> [bug,grass]             -> type1 = grass
-#    water  -> [grass, dragon, water]  -> type1 = grass  
-#    fairy  -> [poison, steel, fire]   -> type2 = poison
+# 1 We loop over all pokemon
+# 2 A pokemon has 2 types, type1 and type2. type1 can be 'none'
+# 3 loop over the input types
+# 4 for each input type, calculate whether the type-combo of a pokemon resists it, using the weakness chart
+# 5 if one of the input types is not resisted by the pokemon, it is not qualified
+# 6 print pokemon if it the qualified
 
 
